@@ -1,0 +1,10 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "ignore": [
+    "**/*.d.ts"
+  ],
+  "ignoreDependencies": [
+    "tailwindcss",
+    "primeicons"
+  ]
+}
