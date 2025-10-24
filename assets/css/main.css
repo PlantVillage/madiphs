@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* Must-have defaults. Keep it as small as possible  */
+
+html {
+  font-family: var(--font-kit);
+  color: var(--color-kit-gray1);
+}
+
+body {
+   font-family: "Inter Variable";
+   color: var(--color-gray-800);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+table {
+  border-spacing: 0;
+}
+
+/* Fix specificity of tailwind's positionioning classes */
+.relative.absolute {
+  position: absolute;
+}
+
+/* Disable all non-standard touch behavior, like doubletap-to-zoom */
+* {
+  touch-action: manipulation;
+}
+
+/* Compatibility with primevue theme and base font of 16px */
+.p-component {
+  line-height: normal;
+}
+
+.p-component:not([class*='-sm'], [class*='-lg']):not(.p-tag) {
+  font-size: 0.875rem !important;
+  line-height: normal;
+}
+
+.p-tag {
+  font-size: 0.765625rem !important;
+}
+
+.p-datatable-tbody,
+.p-datatable-column-title {
+  font-size: 0.875rem;
+}
+
+@layer components {
+   .card {
+      @apply rounded-xl border border-gray-100 bg-white p-4 drop-shadow-xs;
+   }
+
+   .btn {
+      @apply inline-flex truncate cursor-pointer h-10 items-center justify-center rounded-lg px-3.5 font-semibold md:h-12 md:rounded-xl md:px-4;
+
+      color: var(--btn-fg, var(--color-gray-800));
+      background-color: var(--btn-bg, var(--color-emerald-200));
+
+      &:hover {
+         background-color: var(--btn-bg-hover, var(--color-emerald-300));
+      }
+   }
+
+   .btn-contrast {
+      --btn-bg: var(--color-gray-800);
+      --btn-fg: var(--color-white);
+      --btn-bg-hover: var(--color-gray-900);
+   }
+
+   .btn-primary {
+      --btn-bg: var(--color-sky-500);
+      --btn-fg: var(--color-white);
+      --btn-bg-hover: var(--color-sky-600);
+   }
+
+   .input {
+      @apply h-10 rounded-xl border bg-white border-gray-300 px-3.5 placeholder:text-gray-400 md:h-12 md:rounded-xl md:px-4;
+   }
+
+   .textarea {
+      @apply min-h-10 bg-white rounded-xl border border-gray-300 px-3.5 py-2 placeholder:text-gray-400 md:min-h-12 md:rounded-xl md:px-4 md:py-3;
+   }
+}
+
+/* Vue Transition Classes */
+.fade-enter-active,
+.fade-leave-active {
+   @apply transition-opacity duration-200;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+   @apply opacity-0;
+}
