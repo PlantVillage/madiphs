@@ -12,7 +12,7 @@ type EpaOption = {
   label: string
 }
 
-export type CropOption = {
+type CropOption = {
   value: string
   label: string
 }
