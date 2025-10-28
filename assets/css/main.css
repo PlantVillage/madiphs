@@ -1,52 +1,53 @@
 @import "tailwindcss";
 
 /* Must-have defaults. Keep it as small as possible  */
+@layer base {
+   html {
+      font-family: var(--font-kit);
+      color: var(--color-kit-gray1);
+   }
 
-html {
-  font-family: var(--font-kit);
-  color: var(--color-kit-gray1);
-}
+   body {
+      font-family: "Inter Variable";
+      color: var(--color-gray-800);
+   }
 
-body {
-   font-family: "Inter Variable";
-   color: var(--color-gray-800);
-}
+   button:disabled {
+      cursor: not-allowed;
+   }
 
-button:disabled {
-  cursor: not-allowed;
-}
+   table {
+      border-spacing: 0;
+   }
 
-table {
-  border-spacing: 0;
-}
+   /* Fix specificity of tailwind's positionioning classes */
+   .relative.absolute {
+     position: absolute;
+   }
 
-/* Fix specificity of tailwind's positionioning classes */
-.relative.absolute {
-  position: absolute;
-}
+   /* Disable all non-standard touch behavior, like doubletap-to-zoom */
+   * {
+      touch-action: manipulation;
+   }
 
-/* Disable all non-standard touch behavior, like doubletap-to-zoom */
-* {
-  touch-action: manipulation;
-}
+   /* Compatibility with primevue theme and base font of 16px */
+   .p-component {
+      line-height: normal;
+   }
 
-/* Compatibility with primevue theme and base font of 16px */
-.p-component {
-  line-height: normal;
-}
+   .p-component:not([class*='-sm'], [class*='-lg']):not(.p-tag) {
+      font-size: 0.875rem !important;
+      line-height: normal;
+   }
 
-.p-component:not([class*='-sm'], [class*='-lg']):not(.p-tag) {
-  font-size: 0.875rem !important;
-  line-height: normal;
-}
+   .p-tag {
+      font-size: 0.765625rem !important;
+   }
 
-.p-tag {
-  font-size: 0.765625rem !important;
-}
-
-.p-datatable-tbody,
-.p-datatable-column-title {
-  font-size: 0.875rem;
+   .p-datatable-tbody,
+   .p-datatable-column-title {
+      font-size: 0.875rem;
+   }
 }
 
 @layer components {
@@ -95,4 +96,8 @@ table {
 .fade-enter-from,
 .fade-leave-to {
    @apply opacity-0;
+}
+
+.p-select-label {
+   font-size: revert;
 }
