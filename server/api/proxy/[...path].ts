@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const path = event.context.params?.path || ''
   const query = getQuery(event)
+
   try {
     const response = await $fetch.raw(`${process.env.NUXT_INTERNAL_PROXY_BASE_URL}/${path}`, {
       method: event.method,
@@ -17,5 +18,6 @@ export default defineEventHandler(async (event) => {
   }
   catch (error: unknown) {
     console.error(`Proxy error for /${path}:`, error)
+    throw error
   }
 })

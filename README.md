@@ -33,8 +33,8 @@ npm install
 3. Set up environment variables:
 
 ```bash
-# Create .env file
-cp .env.local .env
+# Create .env file from example
+cp env.example .env
 ```
 
 4. Start the development server:
@@ -45,10 +45,63 @@ npm run dev
 
 The application will be available at `http://localhost:3002`
 
+## Development
+
+### Working with Mock API
+
+The project includes a mock API system for development without backend dependencies.
+
+**Enable Mock API:**
+
+```bash
+# In .env file
+NUXT_PUBLIC_API_BASE_URL=http://localhost:3002/api/mocks
+```
+
+**Note:** After changing environment variables, restart the development server for changes to take effect.
+
+**Mock endpoints:**
+- `http://localhost:3002/api/mocks/api/v1/public/madiphs`
+- Supports query parameters: `?crop_name=tomato`
+- Returns filtered mock data based on crop_name
+
+**Mock data location:**
+- `server/data/madiphs.ts` - Contains mock data and filter functions
+- `server/api/mocks/[...path].ts` - Dynamic mock API handler
+
+### Working with Proxy API
+
+The project includes a proxy API system for development for example with local backend
+
+**Enable Proxy:**
+
+```bash
+# In .env file
+NUXT_PUBLIC_API_BASE_URL=http://localhost:3002/api/proxy
+NUXT_INTERNAL_PROXY_BASE_URL=https://your-backend.com
+```
+
+**Note:** After changing environment variables, restart the development server for changes to take effect.
+
+**How it works:**
+1. Your app makes a request to `/api/proxy/api/v1/public/madiphs`
+2. The proxy forwards it to `https://your-backend.com/api/v1/public/madiphs`
+
+**Proxy configuration:**
+- `server/api/proxy/[...path].ts` - Dynamic proxy handler
+- Only available in development mode
+- Forwards all HTTP methods (GET, POST, etc.)
+- Preserves query parameters
+
+You can leverage both approaches simultaneously in your development workflow:
+- **Mocks** (`/api/mocks`) - for features where the backend doesn't exist yet
+- **Proxy** (`/api/proxy`) - for backend endpoints that are already implemented and deployed
+
+This hybrid strategy enables you to develop against real APIs where available, while using mocks to unblock frontend development for features still awaiting backend implementation.
+
 ### Available Scripts
 
 - `npm run dev` - Start development server
-- `npm run build` - Build for production
 - `npm run generate` - Generate static site
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
@@ -68,5 +121,9 @@ madiphs/
 ├── assets/             # Static assets and CSS
 ├── public/             # Public static files
 ├── server/             # Server-side code
+│   ├── api/
+│   │   ├── mocks/      # Mock API endpoints
+│   │   └── proxy/      # Proxy endpoints for CORS bypass
+│   └── data/           # Mock data definitions
 └── nuxt.config.ts      # Nuxt configuration
 ```
