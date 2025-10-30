@@ -1,0 +1,66 @@
+name: madiphs-deploy
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}    
+
+      - name: Slack Notification - Deployment Started
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: plantvillage-deploy
+          SLACK_COLOR: '#FFA500'
+          SLACK_MESSAGE: 'Deployment has started! :steam_locomotive:'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linters and checks
+        run: npm run check
+
+      - name: Static generate
+        env:
+          NUXT_PUBLIC_API_BASE_URL: "https://plantvillage.psu.edu"
+          NUXT_PUBLIC_PLANT_VILLAGE_BASE_URL: "https://plantvillage.psu.edu"
+        run: |
+          npm run generate
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync .output/public/ s3://${{ secrets.S3_BUCKET }} --delete
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+      - name: Slack Notification - Deployment Failed
+        uses: rtCamp/action-slack-notify@v2
+        if: failure()
+        env:
+          SLACK_CHANNEL: plantvillage-deploy
+          SLACK_COLOR: 'danger'
+          SLACK_MESSAGE: 'Deployment failed! :x:'
+          SLACK_TITLE: Message
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: plantvillage-deploy
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'Application Deployed! :rocket:'
+          SLACK_TITLE: Message
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
