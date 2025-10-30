@@ -1,0 +1,43 @@
+{
+  "name": "madiphs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "check": "npm run lint && npm run find-unused && npm run type-check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "nuxt typecheck",
+    "find-unused": "knip"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.5",
+    "@nuxt/image": "1.9.0",
+    "@primevue/nuxt-module": "^4.3.2",
+    "@primevue/themes": "^4.3.2",
+    "@tailwindcss/vite": "^4.0.14",
+    "@vueuse/core": "13.8.0",
+    "nuxt": "^3.16.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.3.2",
+    "qs": "6.12.1",
+    "tailwindcss": "^4.1.12",
+    "temporal-polyfill": "^0.2.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "zod": "3.23.3"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "1.2.0",
+    "@nuxt/icon": "^1.11.0",
+    "@types/node": "^22.13.13",
+    "@types/qs": "6.9.15",
+    "eslint": "^9.0.0",
+    "knip": "^5.66.2",
+    "typescript": "^5.8.2"
+  }
+}
